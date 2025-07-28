@@ -7,13 +7,7 @@ function Sidebar() {
   const currentPath = location.pathname;
 
   const [expandedMenus, setExpandedMenus] = useState({
-    'media-management': false,
-    'vip': false,
-    'engagement': false,
-    'cast-crew': false,
-    'user-pages': false,
-    'user-management': false,
-    'profile': false,
+    products: false,
   });
 
   const toggleMenu = (menuId) => {
@@ -23,56 +17,16 @@ function Sidebar() {
     }));
   };
 
+  //Muốn thêm children(submenu) thì thêm children
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: '📊' },
+    { id: 'categories', label: 'Categories', icon: '📂' },
     {
-      id: 'media-management',
-      label: 'Media Management',
-      icon: '📺',
+      id: 'products',
+      label: 'Products',
+      icon: '🛒',
       expandable: true,
-      children: ['Movies', 'TV Shows', 'Live TV'],
-    },
-    {
-      id: 'vip',
-      label: 'Vip',
-      icon: '⭐',
-      expandable: true,
-      children: ['VIP Members', 'Subscriptions'],
-    },
-    {
-      id: 'engagement',
-      label: 'Engagement Pages',
-      icon: '👥',
-      expandable: true,
-      children: ['Comments', 'Reviews', 'Ratings'],
-    },
-    {
-      id: 'cast-crew',
-      label: 'Cast & Crew',
-      icon: '🎬',
-      expandable: true,
-      children: ['Actors', 'Directors', 'Producers'],
-    },
-    {
-      id: 'user-pages',
-      label: 'User Pages',
-      icon: '📄',
-      expandable: true,
-      children: ['User Profiles', 'Watchlist'],
-    },
-    {
-      id: 'user-management',
-      label: 'User Management',
-      icon: '👤',
-      expandable: true,
-      children: ['All Users', 'Banned Users', 'Moderators'],
-    },
-    {
-      id: 'profile',
-      label: 'Profile',
-      icon: '⚙️',
-      expandable: true,
-      children: ['Settings', 'Account Info'],
+      children: ['All Products'],
     },
   ];
 
@@ -84,9 +38,8 @@ function Sidebar() {
       <div>
         {item.expandable ? (
           <div
-            className={`flex items-center justify-between px-4 py-2 cursor-pointer transition-colors ${
-              isActive ? 'bg-blue-100 text-blue-600 border-r-2 border-blue-600' : 'text-gray-600 hover:bg-gray-100'
-            }`}
+            className={`flex items-center justify-between px-4 py-2 cursor-pointer transition-colors ${isActive ? 'bg-blue-100 text-blue-600 border-r-2 border-blue-600' : 'text-gray-600 hover:bg-gray-100'
+              }`}
             onClick={() => toggleMenu(item.id)}
             style={{ paddingLeft: `${16 + level * 16}px` }}
           >
@@ -99,9 +52,8 @@ function Sidebar() {
         ) : (
           <Link
             to={`/${item.id}`}
-            className={`flex items-center justify-between px-4 py-2 transition-colors ${
-              isActive ? 'bg-blue-100 text-blue-600 border-r-2 border-blue-600' : 'text-gray-600 hover:bg-gray-100'
-            }`}
+            className={`flex items-center justify-between px-4 py-2 transition-colors ${isActive ? 'bg-blue-100 text-blue-600 border-r-2 border-blue-600' : 'text-gray-600 hover:bg-gray-100'
+              }`}
             style={{ paddingLeft: `${16 + level * 16}px` }}
           >
             <div className="flex items-center">
@@ -120,9 +72,8 @@ function Sidebar() {
                 <Link
                   key={index}
                   to={childPath}
-                  className={`block px-8 py-2 text-sm transition-colors ${
-                    isChildActive ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:bg-gray-200'
-                  }`}
+                  className={`block px-8 py-2 text-sm transition-colors ${isChildActive ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:bg-gray-200'
+                    }`}
                 >
                   {child}
                 </Link>
@@ -147,36 +98,11 @@ function Sidebar() {
       {/* Menu Items */}
       <div className="py-4">
         <div className="px-4 py-2">
-          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">UI ELEMENTS</h3>
+          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MAIN MENU</h3>
         </div>
-        <MenuItem item={menuItems.find((item) => item.id === 'dashboard')} />
-
-        <div className="px-4 py-2 mt-4">
-          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">CATEGORIES</h3>
-        </div>
-        <MenuItem item={{ id: 'categories', label: 'Categories', icon: '📂' }} />
-
-        <div className="px-4 py-2 mt-4">
-          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">FORMS AND DATAS</h3>
-        </div>
-        {menuItems.slice(1, 4).map((item) => (
+        {menuItems.map((item) => (
           <MenuItem key={item.id} item={item} />
         ))}
-
-        <div className="px-4 py-2 mt-4">
-          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">PAGES</h3>
-        </div>
-        <MenuItem item={menuItems.find((item) => item.id === 'user-pages')} />
-
-        <div className="px-4 py-2 mt-4">
-          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">USER MANAGEMENT</h3>
-        </div>
-        <MenuItem item={menuItems.find((item) => item.id === 'user-management')} />
-
-        <div className="px-4 py-2 mt-4">
-          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">HELP</h3>
-        </div>
-        <MenuItem item={menuItems.find((item) => item.id === 'profile')} />
       </div>
     </div>
   );

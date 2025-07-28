@@ -12,26 +12,28 @@ import CategoryModal from './CategoryModal';
 import TableHeader from '../../components/TableHeader';
 import ModalDeleted from '../../components/ModalDeleted';
 import axios from 'axios';
+import { useCategories } from '../../contexts/CategoryProvider';
 
 const inner = { name: "", description: "" }
 function Categories() {
-
+    const { handleUpdate }  =  useCategories();
     const [openAddModal, setOpenAddModal] = useState(false);
     const [category, setCategory] = useState(inner);
-    const [update, setUpdate] = useState(false);
-
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [deleteCategory, setDeleteCategory] = useState(null);
 
+    const [error, setError]= useState(inner)
 
-    const [isEdit, setIsEdit] = useState(false);
+    const [search, setSearch] = useState("")
 
     const handleOpenAdd = () => {
+        setError(inner)
         setCategory(inner)
         setOpenAddModal(true);
     }
 
     const handleCloseAdd = () => {
+        setError(inner)
         setOpenAddModal(false);
     }
 
@@ -39,18 +41,27 @@ function Categories() {
         
         setCategory({ ...category, [e.target.name]: e.target.value });
     }
-
-    const handleUpdate = () => {
-        setUpdate(!update);
-    }
-
     const handleDelete = async () => {
         await axios.delete(`https://687f8f39efe65e52008a3579.mockapi.io/categories/${deleteCategory.id}`);
         setOpenDeleteModal(false);
         handleUpdate();
     }
 
+    const validateInput = ()=>{
+        
+        const newError = {}
 
+        newError.name = category.name ? "" : "Please enter your name"
+        newError.description = category.description ? "" : "Please enter your description"
+
+        setError(newError)
+
+        return Object.values(newError).every(element => element == "")
+    }
+
+    const handleSearch =(event)=>{
+        setSearch(event.target.value)
+    }
 
     return (
         <div className="bg-white rounded-lg shadow">
@@ -59,25 +70,24 @@ function Categories() {
                 handleCloseAdd={handleCloseAdd}
                 category={category}
                 handleChangInput={handleChangInput}
-                handleUpdate={handleUpdate}
-                isEdit={isEdit}
+                validateInput={validateInput}
+                setError={setError}
+                error={error}     
             />
             <ModalDeleted
                 openDeleteModal={openDeleteModal}
                 setOpenDeleteModal={setOpenDeleteModal}
                 deleteCategory={deleteCategory}
                 handleDelete={handleDelete} />
-            <TableHeader handleOpenAdd={handleOpenAdd} />
+            <TableHeader handleOpenAdd={handleOpenAdd} handleSearch={handleSearch} title={"Categories"}/>
             <TableCategory
-                update={update}
                 handleOpenModal={setOpenAddModal}
                 openDeleteModal={openDeleteModal}
                 setOpenDeleteModal={setOpenDeleteModal} 
                 setCategory={setCategory}          
                 setOpenAddModal={setOpenAddModal} 
                 setDeleteCategory={setDeleteCategory}
-                setIsEdit={setIsEdit}
-
+                search={search}
             />
         </div>
     );

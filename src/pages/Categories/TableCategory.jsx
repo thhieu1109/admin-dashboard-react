@@ -6,12 +6,14 @@ import { DeleteIcon, EditIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { useCategories } from '../../contexts/CategoryProvider';
 
 
 
 
-function TableCategory({ update, setIsEdit, setDeleteCategory, setOpenDeleteModal, setCategory, setOpenAddModal }) {
+function TableCategory({ setDeleteCategory, setOpenDeleteModal, setCategory, setOpenAddModal,search }) {
 
+   const { categories }  =  useCategories();
     const columns = [
         { field: 'id', headerName: '#', width: 70 },
         { field: 'name', headerName: 'Name', width: 130 },
@@ -41,20 +43,7 @@ function TableCategory({ update, setIsEdit, setDeleteCategory, setOpenDeleteModa
         },
     ];
     const paginationModel = { page: 0, pageSize: 5 };
-
-
-    const [categories, setCategories] = useState([]);
-    useEffect(() => {
-        getAllCate();
-    }, [update]);
-
-    const getAllCate = async () => {
-        const response = await axios.get("https://687f8f39efe65e52008a3579.mockapi.io/categories");
-        setCategories(response.data);
-    }
-
     const handleEdit = (row) => {
-        setIsEdit(true);
         setCategory(row);
         setOpenAddModal(true);
         
@@ -67,9 +56,9 @@ function TableCategory({ update, setIsEdit, setDeleteCategory, setOpenDeleteModa
 
 
     return (
-        <Paper sx={{ height: 400, width: '100%' }}>
+        <Paper sx={{ height: 500, width: '100%' }}>
             <DataGrid
-                rows={categories}
+                rows={categories.filter(element => element.name.toLowerCase().includes(search.toLowerCase()))}
                 columns={columns}
                 initialState={{ pagination: { paginationModel } }}
                 pageSizeOptions={[5, 10]}

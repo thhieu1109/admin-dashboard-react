@@ -2,9 +2,8 @@ import { useState } from 'react'
 import './App.css'
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import Categories from './pages/Categories/Categories';
-import Dashboard from './pages/Dashboard/Dashboard';
-import Media from './pages/Media/Media';
+
+
 import AppRouter from './routes/AppRouter';
 
 
